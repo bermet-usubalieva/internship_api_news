@@ -2,6 +2,8 @@ import React, { FC, useEffect } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { getNewsInUS } from '../../store/slices/newsSlices';
 import Output from '../../components/Output/Output';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 
 
 const HomePage: FC = () => {
@@ -12,7 +14,9 @@ const HomePage: FC = () => {
     }, [dispatch])
     return (
         <div>
+            <Header />
             <Output />
+            <Footer />
         </div>
     );
 };

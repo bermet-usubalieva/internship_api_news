@@ -6,9 +6,7 @@ import Footer from './components/Footer/Footer';
 const App: FC = () => {
   return (
     <div>
-      <Header />
       <Main />
-      <Footer />
     </div>
   );
 };

@@ -7,7 +7,9 @@ export type News = {
     author: string,
     content: string,
     urlToImage: string,
-    title: string
+    title: string,
+    description: string,
+    url: string
 }
 
 type NewsState = {
@@ -24,7 +26,6 @@ export const getNewsInUS = createAsyncThunk<News[], void, { rejectValue: string 
     'news/getNewsInUS',
     async (_, { rejectWithValue }) => {
         const res = await newsAPI.getAllNewToday()
-        console.log(res)
 
         if (res.status !== 200) {
             return rejectWithValue('Server Error')
@@ -34,6 +35,18 @@ export const getNewsInUS = createAsyncThunk<News[], void, { rejectValue: string 
 
     }
 )
+export const searchNews = createAsyncThunk<News[], { query: string, sortBy?: string }, { rejectValue: string }>(
+    'news/searchNews',
+    async ({ query, sortBy }, { rejectWithValue }) => {
+        const res = await newsAPI.searchNews(query, sortBy);
+
+        if (res.status !== 200) {
+            return rejectWithValue('Server Error');
+        }
+
+        return res.data.articles;
+    }
+);
 
 
 const newsSlice = createSlice({
@@ -48,6 +61,18 @@ const newsSlice = createSlice({
             state.loading = false
             state.news = action.payload
         })
+        //////////////////////////////////
+        addCase(searchNews.pending, (state) => {
+            state.loading = true;
+        });
+        addCase(searchNews.fulfilled, (state, action) => {
+            state.loading = false;
+            state.news = action.payload;
+        });
+        addCase(searchNews.rejected, (state, action) => {
+            state.loading = false;
+            console.error(action.payload);
+        });
     }
 })
 

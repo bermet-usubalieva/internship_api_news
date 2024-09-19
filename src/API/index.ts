@@ -9,8 +9,10 @@ export const newsAPI = {
     getAllNewToday() {
         return instance.get(`top-headlines?country=us&category=business&apiKey=${key}`)
     },
-    getNewsByPudDate(pub: string) {
-        return instance.get(`everything?q=${pub}&apiKey=${key}`)
+    searchNews(query: string, sortBy?: string) {
+        const baseURL = `everything?q=${query}&apiKey=${key}`;
+        const sortParam = sortBy ? `&sortBy=${sortBy}` : ''; // Добавляем параметр только если он существует
+        return instance.get(baseURL + sortParam);
     }
 }
 
